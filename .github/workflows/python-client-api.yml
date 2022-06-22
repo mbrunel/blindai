@@ -55,3 +55,4 @@ jobs:
           user_email: 'matthias.brunel@mithrilsecurity.io'
           user_name: 'mbrunel'
           commit_message: 'Automatic update of the python client documentation due to the release of a new version'
+          destination_branch: 'master'
