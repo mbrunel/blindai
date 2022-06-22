@@ -1,17 +1,13 @@
-name: python-client-api
+name: generate and push doc to gitbook_public
 
-# build the documentation whenever there are new commits on main
+# build the documentation whenever there are new tags
 on:
   push:
-    branches:
-      - test
-    # Alternative: only build for tags.
-    # tags:
-    #   - '*'
+    tags:
+      - '*'
 
-# security: restrict permissions for CI jobs.
-permissions:
-  contents: read
+env:
+  TAG_NAME: VERSION::${GITHUB_REF/refs\/tags\//}
 
 jobs:
   test:
@@ -20,63 +16,40 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
+      - run: echo "hello$TAG_NAME"
 
-      - uses: jwlawson/actions-setup-cmake@v1.12
-      - name: Install Python 3
-        uses: actions/setup-python@v3
-        with:
-          python-version: 3.9
+      # - uses: jwlawson/actions-setup-cmake@v1.12
+      # - name: Install Python 3
+      #   uses: actions/setup-python@v3
+      #   with:
+      #     python-version: 3.9
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r client/requirements.txt
+      # - name: Install dependencies
+      #   run: |
+      #     python -m pip install --upgrade pip
+      #     pip install -r client/requirements.txt
 
-      - name: Build BlindAI
-        run: |
-          cd client
-          python3 setup.py install
-          pip install .
+      # - name: Build BlindAI
+      #   run: |
+      #     cd client
+      #     python3 setup.py install
+      #     pip install .
 
-      - name: Install lazydocs
-        run: pip install lazydocs
+      # - name: Install lazydocs
+      #   run: pip install lazydocs
       
-      - name: Generate md file with lazydocs
-        run: lazydocs client/blindai/client.py
-      - run: ls
-      - run: ls docs
+      # - name: Generate md file with lazydocs
+      #   run: lazydocs client/blindai/client.py
+      #   run: mv docs/client.py.md "client-interface-$TAG_NAME"
 
-# jobs:
-#   # Build the documentation and upload the static HTML files as an artifact.
-#   build:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v3
-#       - uses: actions/setup-python@v3
-
-#       # ADJUST THIS: install all dependencies (including pdoc)
-#       - run: pip install -e .
-#       # ADJUST THIS: build your documentation into docs/.
-#       - run: docs/make.py  
-#       # We use a custom build script for pdoc itself, ideally you just run `pdoc -o docs/ ...` here.
-
-#       - run: tar --directory docs/ -hcf artifact.tar .
-#       - uses: actions/upload-artifact@v3
-#         with:
-#           name: github-pages
-#           path: ./artifact.tar
-  
-#   # Deploy the artifact to GitHub pages.
-#   # This is a separate job so that only actions/deploy-pages has the necessary permissions.
-#   deploy:
-#     needs: build
-#     runs-on: ubuntu-latest
-#     permissions:
-#       pages: write
-#       id-token: write
-#     environment:
-#       name: github-pages
-#       url: ${{ steps.deployment.outputs.page_url }}
-#     steps:
-#       - id: deployment
-#         uses: actions/deploy-pages@v1
+      # - name: Pushes to gitbook_public
+      #   uses: dmnemec/copy_file_to_another_repo_action@main
+      #   env:
+      #     API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+      #   with:
+      #     source_file: 'docs/client.py.md'
+      #     destination_repo: 'dmnemec/release-test'
+      #     destination_folder: 'test-dir'
+      #     user_email: 'example@email.com'
+      #     user_name: 'dmnemec'
+      #     commit_message: 'A custom message for the commit'
