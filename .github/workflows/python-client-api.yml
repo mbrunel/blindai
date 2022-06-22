@@ -45,7 +45,7 @@ jobs:
         env:
           VERSION: ${{ steps.get_version.outputs.VERSION }}
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
-        run: .github/scripts/update_gitbook_public.sh
+        run: bash .github/scripts/update_gitbook_public.sh
 
 
       # - name: Pushes to gitbook_public
