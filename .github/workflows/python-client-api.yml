@@ -13,11 +13,10 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
+
       - name: Get the version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-      
-      - run: echo hello-${{ steps.get_version.outputs.VERSION }}
 
       # - uses: jwlawson/actions-setup-cmake@v1.12
       # - name: Install Python 3
@@ -41,16 +40,18 @@ jobs:
       
       # - name: Generate md file with lazydocs
       #   run: lazydocs client/blindai/client.py
-      #   run: mv docs/client.py.md "client-interface-$TAG_NAME"
+      #   run: mv docs/client.py.md client-interface-${{ steps.get_version.outputs.VERSION }}
+      - name: test file
+        run: echo "hello remote-push" > client-interface-${{ steps.get_version.outputs.VERSION }}
 
-      # - name: Pushes to gitbook_public
-      #   uses: dmnemec/copy_file_to_another_repo_action@main
-      #   env:
-      #     API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
-      #   with:
-      #     source_file: 'docs/client.py.md'
-      #     destination_repo: 'dmnemec/release-test'
-      #     destination_folder: 'test-dir'
-      #     user_email: 'example@email.com'
-      #     user_name: 'dmnemec'
-      #     commit_message: 'A custom message for the commit'
+      - name: Pushes to gitbook_public
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source_file: 'client-interface-${{ steps.get_version.outputs.VERSION }}'
+          destination_repo: 'mbrunel/gitbook_public'
+          destination_folder: 'resources/client-api-reference'
+          user_email: 'matthias.brunel@mithrilsecurity.io'
+          user_name: 'mbrunel'
+          commit_message: 'Automatic update of the python client documentation due to the release of a new version'
