@@ -19,7 +19,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
-      - run: ls -la
+      - run: pip install lazydocs && lazydocs client/blindai/client.py
+      - run: ls
+      - run: ls docs
 
 # jobs:
 #   # Build the documentation and upload the static HTML files as an artifact.
