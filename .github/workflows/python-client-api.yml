@@ -40,17 +40,23 @@ jobs:
       
       - name: Generate md file with lazydocs
         run: lazydocs client/blindai/client.py
-        run: mv docs/client.py.md client-interface-${{ steps.get_version.outputs.VERSION }}
 
-      - name: Pushes to gitbook_public
-        uses: dmnemec/copy_file_to_another_repo_action@main
+      - name: Push
         env:
+          VERSION: ${{ steps.get_version.outputs.VERSION }}
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
-        with:
-          source_file: 'client-interface-${{ steps.get_version.outputs.VERSION }}'
-          destination_repo: 'mbrunel/gitbook_public'
-          destination_folder: 'resources/client-api-reference'
-          user_email: 'matthias.brunel@mithrilsecurity.io'
-          user_name: 'mbrunel'
-          commit_message: 'Automatic update of the python client documentation due to the release of a new version'
-          destination_branch: 'master'
+        run: .github/scripts/update_gitbook_public.sh
+
+
+      # - name: Pushes to gitbook_public
+      #   uses: dmnemec/copy_file_to_another_repo_action@main
+      #   env:
+      #     API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+      #   with:
+      #     source_file: 'client-interface-${{ steps.get_version.outputs.VERSION }}'
+      #     destination_repo: 'mbrunel/gitbook_public'
+      #     destination_folder: 'resources/client-api-reference'
+      #     user_email: 'matthias.brunel@mithrilsecurity.io'
+      #     user_name: 'mbrunel'
+      #     commit_message: 'Automatic update of the python client documentation due to the release of a new version'
+      #     destination_branch: 'master'
