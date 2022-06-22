@@ -17,9 +17,23 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
-      - run: pip install lazydocs && lazydocs client/blindai/client.py
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - uses: jwlawson/actions-setup-cmake@v1.12
+      - name: Install Python 3
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.9
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r client/requirements.txt
+          pip install lazydocs
+
+      - run: lazydocs client/blindai/client.py
       - run: ls
       - run: ls docs
 
