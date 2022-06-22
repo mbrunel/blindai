@@ -18,46 +18,31 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
 
-      # - uses: jwlawson/actions-setup-cmake@v1.12
-      # - name: Install Python 3
-      #   uses: actions/setup-python@v3
-      #   with:
-      #     python-version: 3.9
+      - uses: jwlawson/actions-setup-cmake@v1.12
+      - name: Install Python 3
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.9
 
-      # - name: Install dependencies
-      #   run: |
-      #     python -m pip install --upgrade pip
-      #     pip install -r client/requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r client/requirements.txt
 
-      # - name: Build BlindAI
-      #   run: |
-      #     cd client
-      #     python3 setup.py install
-      #     pip install .
+      - name: Build BlindAI
+        run: |
+          cd client
+          python3 setup.py install
+          pip install .
 
-      # - name: Install lazydocs
-      #   run: pip install lazydocs
+      - name: Install lazydocs
+        run: pip install lazydocs
       
-      # - name: Generate md file with lazydocs
-      #   run: lazydocs client/blindai/client.py
-      - run: mkdir docs && touch docs/client.py.md
+      - name: Generate md file with lazydocs
+        run: lazydocs client/blindai/client.py
 
       - name: Push
         env:
           VERSION: ${{ steps.get_version.outputs.VERSION }}
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         run: bash .github/scripts/update_gitbook_public.sh
-
-
-      # - name: Pushes to gitbook_public
-      #   uses: dmnemec/copy_file_to_another_repo_action@main
-      #   env:
-      #     API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
-      #   with:
-      #     source_file: 'client-interface-${{ steps.get_version.outputs.VERSION }}'
-      #     destination_repo: 'mbrunel/gitbook_public'
-      #     destination_folder: 'resources/client-api-reference'
-      #     user_email: 'matthias.brunel@mithrilsecurity.io'
-      #     user_name: 'mbrunel'
-      #     commit_message: 'Automatic update of the python client documentation due to the release of a new version'
-      #     destination_branch: 'master'
