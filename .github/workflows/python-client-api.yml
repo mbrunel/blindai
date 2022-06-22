@@ -32,17 +32,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r client/requirements.txt
 
-
       - name: Build BlindAI
         run: |
           cd client
           python3 setup.py install
           pip install .
+
       - name: Install lazydocs
-          pip install lazydocs
+        run: pip install lazydocs
       
       - name: Generate md file with lazydocs
-      - run: lazydocs client/blindai/client.py
+        run: lazydocs client/blindai/client.py
       - run: ls
       - run: ls docs
 
