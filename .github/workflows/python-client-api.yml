@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
-      - run: pwd
+      - run: ls -la
 
 # jobs:
 #   # Build the documentation and upload the static HTML files as an artifact.
