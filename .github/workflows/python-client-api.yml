@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
-      - run: echo " Hello github actions "
+      - run: pwd
 
 # jobs:
 #   # Build the documentation and upload the static HTML files as an artifact.
