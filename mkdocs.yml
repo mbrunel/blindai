@@ -1,9 +1,5 @@
 site_name: blindai
 
-site_url: https://www.mithrilsecurity.io/
-
-repo_url: https://github.com/mithril-security/blindai
-
 theme:
   name: "readthedocs"
 
@@ -23,10 +19,10 @@ nav:
   - 'getting-started/deploy-on-hardware.md'
   - 'getting-started/telemetry.md'
 - 'Resources':
-  - 'Client API reference': 'resources/client-api-reference/test2.md'
+  - 'Client API reference': 'resources/client-api-reference/client.html'
   - 'resources/examples.md'
 - 'Advanced':
   - 'advanced/certificate-and-policy.md'
   - 'advanced/setting-up-your-dev-environment.md'
-  - 'advanced/client_side.md'
+  - 'advanced/client_side/client_side.md'
   - 'advanced/blindai-project-structure.md'
